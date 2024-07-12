@@ -8,9 +8,7 @@ namespace _SiriActivationService {
             return YES;
         }
         void swizzle() {
-            Method method = class_getInstanceMethod(objc_lookUpClass("SiriActivationService"), sel_registerName("_isSAEEnabled"));
-            original = reinterpret_cast<decltype(original)>(method_getImplementation(method));
-            method_setImplementation(method, reinterpret_cast<IMP>(custom));
+            MSHookMessageEx(objc_lookUpClass("SiriActivationService"), sel_registerName("_isSAEEnabled"), reinterpret_cast<IMP>(custom), reinterpret_cast<IMP *>(original));
         }
     }
 
