@@ -7,8 +7,8 @@ namespace _SiriActivationService {
         BOOL custom(id self, SEL _cmd) {
             return YES;
         }
-        void swizzle() {
-            MSHookMessageEx(objc_lookUpClass("SiriActivationService"), sel_registerName("_isSAEEnabled"), reinterpret_cast<IMP>(custom), reinterpret_cast<IMP *>(original));
+        void hook() {
+            MSHookMessageEx(objc_lookUpClass("SiriActivationService"), sel_registerName("_isSAEEnabled"), reinterpret_cast<IMP>(&custom), reinterpret_cast<IMP *>(&original));
         }
     }
 
@@ -54,7 +54,7 @@ namespace _SiriActivationService {
 // }
 
 __attribute__((constructor)) static void init() {
-    _SiriActivationService::_isSAEEnabled::swizzle();
+    _SiriActivationService::_isSAEEnabled::hook();
     // _SiriActivationService::_shouldShowHintGlowWithRequest::swizzle();
     // _SiriPresentationViewController::_canPresentSiriEffectsViewControllerWithRequestOptions::swizzle();
     // _SASActivationRequest::requestSourceForButtonIdentifier::swizzle();
